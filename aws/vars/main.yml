@@ -1,0 +1,28 @@
+---
+# vars file for aws
+# AWS Credentials
+
+    aws_access_key: "AKIAI2EPQUFYABSU6DUA"
+
+    aws_secret_key: "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"
+
+    aws_region:     "us-east-2"
+
+
+    # VPC Information
+
+    vpc_name:       "My VPC"
+
+    vpc_cidr_block: "192.168.0.0/19"
+
+
+    # Subnets
+
+    public_subnet_1_cidr:  "192.168.0.0/23"
+
+    private_subnet_1_cidr: "192.168.2.0/23"
+
+    public_subnet_2_cidr:  "192.168.4.0/23"
+
+    private_subnet_2_cidr: "192.168.6.0/23"
+

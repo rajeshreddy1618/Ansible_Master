@@ -1,0 +1,35 @@
+---
+ - hosts: local_host
+   gather_facts: false
+   tasks:
+       - name: creating ec2_vpc
+         ec2_vpc_net:
+           name: web_server
+           cidr_block: 192.168.0.0/19
+           subnets: 
+             cidr: 192.168.0.0/23
+             az: us-east-2a
+             cidr: 192.168.2.0/23
+             az: us-east-2b
+             cidr: 192.168.4.0/23
+             az: us-east-2c
+           internet_gateway: True
+           route_tables:
+             subnets: 192.168.0.0/23
+             routes:
+               dest: 0.0.0.0/0
+               gw: igw
+             subnets: 192.168.2.0/23
+             routes:
+               dest: 0.0.0.0/0
+               gw: igw
+             subnets: 192.168.4.0/23
+             routes:
+               dest: 0.0.0.0/0
+               gw: igw
+           region: us-east-2
+           state: present
+           aws_access_key: AKIAI2EPQUFYABSU6DUA
+           aws_secret_key: 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
+         register: vpc
+

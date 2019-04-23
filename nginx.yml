@@ -1,0 +1,8 @@
+---
+ - hosts: ubuntu
+   tasks:
+     - name: installing nginx
+       apt:
+           name: nginx-full
+           state: present
+           update_cache: yes

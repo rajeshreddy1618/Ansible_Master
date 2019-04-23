@@ -1,0 +1,8 @@
+---
+ - name: installing tomcat 7
+   apt:
+       name: "{{packagename}}"
+       state: present
+   when: ansible_os_family== "Ubuntu"
+   notify: 
+        - restart service

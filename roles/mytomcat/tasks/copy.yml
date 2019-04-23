@@ -1,0 +1,7 @@
+---
+ - name: deployment
+   copy:
+        src: sample.war
+        dest: /var/lib/tomcat/webapps/ROOT
+   notify:
+        - restart service

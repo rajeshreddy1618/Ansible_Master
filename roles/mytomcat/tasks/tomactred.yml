@@ -1,0 +1,9 @@
+---
+ - name: installing tomcat 7
+   yum:
+       name: "{{packagename}}"
+       state: present
+   when: ansible_os_family== "RedHat"
+   notify:
+        - restart service
+

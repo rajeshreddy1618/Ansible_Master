@@ -1,0 +1,11 @@
+---
+ - hosts: ubuntu
+   sudo: True
+   sudo_user: ansible
+   gather_facts: False
+   tasks: 
+     - name: copy jar/war onto tomcat servers
+       copy:
+            src: /home/ansible/webapp/target/webapp.war
+            dest: /var/lib/tomcat7/webapps
+            remote_src: yes

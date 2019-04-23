@@ -1,0 +1,16 @@
+---
+ - hosts: all
+   tasks:
+    - name: installing apache and php
+      apt:
+          name: apache2
+          state: present
+    - name: service restart 
+      service:
+          name: apache2
+          state: restarted
+    - name: installing php
+      apt:
+          name: php7.0-mysql
+          state: present
+          

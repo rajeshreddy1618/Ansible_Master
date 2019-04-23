@@ -1,0 +1,107 @@
+---
+# tasks file for aws-vpc
+    - name: Create VPC
+      ec2_vpc_net:
+        name: "{{ vpc_name }}"
+        cidr_block: "{{ vpc_cidr_block }}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        state: present
+      register: vpc
+     # Creating subnets in multi-AZs
+    - name: Set vpc id in variables
+      set_fact:
+        vpc_id: "{{ vpc.vpc.id }}"
+    - name: Create Public Subnet [AZ-1]
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ vpc_id }}"
+        cidr: 192.168.0.0/23
+        az: "{{ aws_region }}a"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        resource_tags:
+          Name: Public Subnet 1
+      register: subnet
+    - name: Create Private Subnet [AZ-1]
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{vpc_id}}"
+        cidr: 192.168.2.0/23
+        az: "{{ aws_region }}a"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        resource_tags:
+          Name: Private Subnet 1
+      register: subnet
+    - name: Create Public Subnet [AZ-2]
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{vpc_id}}"
+        cidr: 192.168.4.0/23
+        az: "{{ aws_region }}b"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        resource_tags:
+          Name: Public Subnet 2
+      register: subnet
+    - name: Create Private Subnet [AZ-2]
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{vpc_id}}"
+        cidr: 192.168.6.0/23
+        az: "{{ aws_region }}b"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        resource_tags:
+          Name: Private Subnet 2
+      register: subnet
+    # Attaching Network gateway
+    - name: Create Internet Gateway for VPC
+      ec2_vpc_igw:
+        vpc_id: "{{vpc_id}}"
+        region: "{{ aws_region }}"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        state: present
+      register: igw
+    - name: Create Security Group
+      ec2_group:
+        name: Web DMZ
+        description: DMZ Security Group
+        vpc_id:  "{{vpc_id}}"
+        region: us-east-2
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        rules:
+         - proto: tcp
+           from_port: 80
+           to_port: 80
+           cidr_ip: 0.0.0.0/0
+         - proto: tcp
+           from_port: 22
+           to_port: 22
+           cidr_ip: 0.0.0.0/0
+      register: security_group
+    - name: creating ec2 instcance of ubuntu image
+      ec2:
+            key_name: ansible
+            group: Web DMZ
+            vpc_subnet_id: subnet-02efd93cb3b92832a
+            instance_type: t2.micro
+            image: ami-0653e888ec96eab9b
+            wait: true
+            region: us-east-2
+            assign_public_ip: yes
+            count_tag:
+               Name: Nginxserver
+            count: 1
+            aws_access_key: AKIAI2EPQUFYABSU6DUA
+            aws_secret_key: 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
+      register: ec2
+

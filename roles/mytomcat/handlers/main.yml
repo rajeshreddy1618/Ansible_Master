@@ -1,0 +1,6 @@
+---
+# handlers file for mytomcat
+ - name: restart service
+   service:
+           name: "{{packagename}}"
+           state: restarted
