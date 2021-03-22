@@ -2,11 +2,11 @@
 # vars file for aws
 # AWS Credentials
 
-    aws_access_key: "AKIAI2EPQUFYABSU6DUA"
+    aws_access_key: "AKIASCB4NQNRVOS5PHGK"
 
-    aws_secret_key: "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"
+    aws_secret_key: "z4csUe6lJrP1vaOI85pR11sevOyXN3zggtQnZr77"
 
-    aws_region:     "us-east-2"
+    aws_region: "us-east-2"
 
 
     # VPC Information
