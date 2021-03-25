@@ -93,18 +93,18 @@
             vpc_subnet_id: "{{publicsubnet.vpc.subnet.id}}"
     - name: creating ec2 instcance of ubuntu image
       ec2:
-            key_name: ansible
+            key_name: rajesh
             group: Web DMZ
             vpc_subnet_id: "{{vpc_subnet_id}}"
             instance_type: t2.micro
-            image: ami-0653e888ec96eab9b
+            image: ami-0ebc8f6f580a04647
             wait: true
             region: us-east-2
             assign_public_ip: yes
             count_tag:
                Name: Nginxserver
             count: 1
-            aws_access_key: AKIAI2EPQUFYABSU6DUA
-            aws_secret_key: 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
+            aws_access_key: AKIASCB4NQNRVOS5PHGK
+            aws_secret_key: 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
       register: ec2
 
