@@ -24,7 +24,7 @@
         aws_secret_key: "{{ aws_secret_key }}"
         resource_tags:
           Name: Public Subnet 1
-      register: subnet
+      register: publicsubnet
     - name: Create Private Subnet [AZ-1]
       ec2_vpc_subnet:
         state: present
@@ -88,11 +88,14 @@
            to_port: 22
            cidr_ip: 0.0.0.0/0
       register: security_group
+    - name: assigning subnet to ec2
+      set_fact:
+            vpc_subnet_id: "{{publicsubnet.vpc.subnet.id}}"
     - name: creating ec2 instcance of ubuntu image
       ec2:
             key_name: ansible
             group: Web DMZ
-            vpc_subnet_id: subnet-02efd93cb3b92832a
+            vpc_subnet_id: "{{vpc_subnet_id}}"
             instance_type: t2.micro
             image: ami-0653e888ec96eab9b
             wait: true
